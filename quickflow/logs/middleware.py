@@ -23,19 +23,6 @@ class LogMiddleware(BaseHTTPMiddleware):
             }
         )
 
-        response = await call_next(request)
-
-        base_logger.info(
-            "Request finished",
-            extra={
-                RequestsDataEnum.RESPONSE_FROM_SERVER: {"status_code": response.status_code},
-            },
-        )
-        return response
-
-
-class ExceptionLoggerMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request, call_next):
         try:
             response = await call_next(request)
         except Exception:
@@ -46,5 +33,11 @@ class ExceptionLoggerMiddleware(BaseHTTPMiddleware):
                 },
             )
             return JSONResponse({"detail": "Error", "other_stuff": "blah"})
-        else:
-            return response
+
+        base_logger.info(
+            "Request finished",
+            extra={
+                RequestsDataEnum.RESPONSE_FROM_SERVER: {"status_code": response.status_code},
+            },
+        )
+        return response

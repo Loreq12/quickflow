@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from quickflow.actions.mail.gmail import GMailStrategy
 from quickflow.logs.logger import logger
-from quickflow.logs.middleware import LogMiddleware, ExceptionLoggerMiddleware
+from quickflow.logs.middleware import LogMiddleware
 
 
 def run():
@@ -17,7 +17,6 @@ def run():
 
 app = FastAPI()
 app.add_middleware(LogMiddleware)
-app.add_middleware(ExceptionLoggerMiddleware)
 
 
 @app.get("/ok")
