@@ -1,10 +1,15 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
+from pathlib import Path
 
 
-class BaseStorageStrategy:
+class BaseStorageStrategy(ABC):
+
+    # @abstractmethod
+    # def auth(self):
+    #     raise NotImplementedError
 
     @abstractmethod
-    def auth(self):
+    def list(self, path: Path):
         raise NotImplementedError
 
     @abstractmethod
