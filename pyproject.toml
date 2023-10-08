@@ -17,6 +17,22 @@ requests = "^2.31.0"
 uvicorn = "^0.23.2"
 
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.5.1"
+ruff = "^0.0.292"
+black = "^23.9.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[[tool.mypy.overrides]]
+module = [
+    "requests",
+    "google.oauth2.credentials",
+    "google_auth_oauthlib.flow",
+    "googleapiclient.discovery",
+    "googleapiclient.errors",
+    "google.auth.transport.requests",
+]
+ignore_missing_imports = true
