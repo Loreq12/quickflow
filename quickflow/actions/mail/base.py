@@ -1,7 +1,7 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 
-class BaseMailStrategy:
+class BaseMailStrategy(ABC):
 
     @abstractmethod
     def get_mail(self):
