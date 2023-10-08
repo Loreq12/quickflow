@@ -1,7 +1,7 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 
-class BaseInvoiceStrategy:
+class BaseInvoiceStrategy(ABC):
 
     @abstractmethod
     def create_invoice(self, invoice_data):
