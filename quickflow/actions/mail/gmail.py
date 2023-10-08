@@ -9,43 +9,43 @@ from quickflow.actions.mail.base import BaseMailStrategy
 
 
 class GMailStrategy(BaseMailStrategy):
-
     def get_mail(self):
         creds = None
-        SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+        SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        if os.path.exists("token.json"):
+            creds = Credentials.from_authorized_user_file("token.json", SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', SCOPES)
+                    "credentials.json", SCOPES
+                )
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open('token.json', 'w') as token:
+            with open("token.json", "w") as token:
                 token.write(creds.to_json())
 
         try:
             # Call the Gmail API
-            service = build('gmail', 'v1', credentials=creds)
-            results = service.users().labels().list(userId='me').execute()
-            labels = results.get('labels', [])
+            service = build("gmail", "v1", credentials=creds)
+            results = service.users().labels().list(userId="me").execute()
+            labels = results.get("labels", [])
 
             if not labels:
-                print('No labels found.')
+                print("No labels found.")
                 return
-            print('Labels:')
+            print("Labels:")
             for label in labels:
-                print(label['name'])
+                print(label["name"])
 
         except HttpError as error:
             # TODO(developer) - Handle errors from gmail API.
-            print(f'An error occurred: {error}')
+            print(f"An error occurred: {error}")
 
     def send_mail(self, attachments: list):
         ...

@@ -19,8 +19,11 @@ class LogMiddleware(BaseHTTPMiddleware):
         base_logger.info(
             "Got request to server",
             extra={
-                RequestsDataEnum.REQUEST_TO_SERVER: {"method": request.method, "url": str(request.url)},
-            }
+                RequestsDataEnum.REQUEST_TO_SERVER: {
+                    "method": request.method,
+                    "url": str(request.url),
+                },
+            },
         )
 
         try:
@@ -37,7 +40,9 @@ class LogMiddleware(BaseHTTPMiddleware):
         base_logger.info(
             "Request finished",
             extra={
-                RequestsDataEnum.RESPONSE_FROM_SERVER: {"status_code": response.status_code},
+                RequestsDataEnum.RESPONSE_FROM_SERVER: {
+                    "status_code": response.status_code
+                },
             },
         )
         return response

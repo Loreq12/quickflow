@@ -5,4 +5,3 @@ class ActionType(Enum):
     STORAGE = auto()
     MAIL = auto()
     INVOICE = auto()
-
