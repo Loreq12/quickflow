@@ -1,8 +1,7 @@
+from typing import Literal
 from urllib.parse import urljoin
 
 import requests
-
-from typing import Literal
 
 from quickflow.logs import base_logger
 from quickflow.logs.middleware import RequestsDataEnum

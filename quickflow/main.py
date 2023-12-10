@@ -1,17 +1,18 @@
 import contextlib
-import logging
-
-import uvicorn
-from celery import Celery
+from typing import Callable
 
 from fastapi import Depends, FastAPI
 
-from quickflow.actions.invoice.wfirma import WFirmaInvoiceStrategy
-from quickflow.actions.mail.gmail import GMailStrategy
-from quickflow.config import Settings, get_settings
+from quickflow.config import Settings
 from quickflow.db import get_async_db
+from quickflow.external_actions.chain.invoice import (InvoiceHandler)
+from quickflow.external_actions.chain.models import InvoiceAction
+from quickflow.external_actions.strategy.base import AbstractServiceStrategy
+from quickflow.external_actions.strategy.invoice.base import \
+    BaseInvoiceStrategy
+from quickflow.external_actions.strategy.invoice.wfirma import \
+    WFirmaInvoiceStrategy
 from quickflow.logs.middleware import LogMiddleware
-from quickflow.logs import base_logger
 from quickflow.models import User
 from quickflow.tasks.test import test_task
 
@@ -55,5 +56,11 @@ def create_app() -> FastAPI:
 
 if __name__ == "__main__":
     settings = Settings()
-    run()
+
+    handler = InvoiceHandler(service_name="WFirma")
+    handler.execute_next(InvoiceAction.CREATE)
+
+    # data: BaseInvoiceStrategy = AbstractServiceStrategy.get_service_by_name("WFirma")()
+    # mapper: dict[InvoiceAction, Callable] = data.get_action_to_function_mapper()
+    # run()
 #     uvicorn.run(app, host="0.0.0.0", port=8000, log_config=None, reload=True)

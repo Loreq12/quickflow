@@ -1,17 +1,28 @@
 import os
+from pathlib import Path
+from typing import Callable
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from quickflow.actions.mail.base import BaseMailStrategy
+
+from quickflow.external_actions.strategy.base import T
+from quickflow.external_actions.strategy.storage.base import \
+    BaseStorageStrategy
 
 
-class GMailStrategy(BaseMailStrategy):
-    def get_mail(self):
+class GDriveStorageStrategy(BaseStorageStrategy):
+
+    service_name = "Google Drive"
+
+    def list(self, path: Path):
+        """Shows basic usage of the Drive v3 API.
+        Prints the names and ids of the first 10 files the user has access to.
+        """
         creds = None
-        SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+        SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly"]
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
@@ -31,21 +42,28 @@ class GMailStrategy(BaseMailStrategy):
                 token.write(creds.to_json())
 
         try:
-            # Call the Gmail API
-            service = build("gmail", "v1", credentials=creds)
-            results = service.users().labels().list(userId="me").execute()
-            labels = results.get("labels", [])
+            service = build("drive", "v3", credentials=creds)
 
-            if not labels:
-                print("No labels found.")
+            # Call the Drive v3 API
+            results = (
+                service.files()
+                .list(pageSize=10, fields="nextPageToken, files(id, name)")
+                .execute()
+            )
+            items = results.get("files", [])
+
+            if not items:
+                print("No files found.")
                 return
-            print("Labels:")
-            for label in labels:
-                print(label["name"])
-
+            print("Files:")
+            for item in items:
+                print("{0} ({1})".format(item["name"], item["id"]))
         except HttpError as error:
-            # TODO(developer) - Handle errors from gmail API.
+            # TODO(developer) - Handle errors from drive API.
             print(f"An error occurred: {error}")
 
-    def send_mail(self, attachments: list):
+    def upload(self):
+        ...
+
+    def download(self):
         ...

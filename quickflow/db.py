@@ -23,8 +23,9 @@
 
 
 # ASYNC
-from sqlalchemy import create_engine, Engine
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncEngine
+from sqlalchemy import Engine, create_engine
+from sqlalchemy.ext.asyncio import (AsyncEngine, async_sessionmaker,
+                                    create_async_engine)
 
 from quickflow.config import get_settings
 

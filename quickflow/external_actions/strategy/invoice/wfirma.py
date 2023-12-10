@@ -3,10 +3,13 @@ import os
 
 import requests
 
-from quickflow.actions.invoice.base import BaseInvoiceStrategy
+from quickflow.external_actions.strategy.invoice.base import BaseInvoiceStrategy
 
 
 class WFirmaInvoiceStrategy(BaseInvoiceStrategy):
+
+    service_name = "WFirma"
+
     def list_invoices(self):
         if os.path.exists("credentials_wfirma.json"):
             with open("credentials_wfirma.json") as credentials_file:

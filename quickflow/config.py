@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import PostgresDsn, BaseModel, RedisDsn
+from pydantic import BaseModel, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,7 +19,7 @@ class PostgresConfig(BaseModel):
 
 class Settings(BaseSettings):
     database: PostgresConfig = PostgresConfig()
-    cache: RedisDsn = "redis://localhost:6379/0"
+    cache: RedisDsn = "redis://localhost:6379/0"  # type: ignore
 
     model_config = SettingsConfigDict(env_file=".envrc")
 

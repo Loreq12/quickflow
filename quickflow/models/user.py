@@ -1,6 +1,6 @@
 from typing import Self
 
-from sqlalchemy import Column, UUID, String, select
+from sqlalchemy import UUID, Column, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from quickflow.models.base import Base
@@ -15,7 +15,7 @@ class User(Base):
 
     @staticmethod
     def encrypt_password(password: str) -> str:
-        ...
+        return ""
 
     @classmethod
     async def get_by_email(cls, db: AsyncSession, email: str) -> Self | None:
@@ -25,4 +25,4 @@ class User(Base):
 
     @classmethod
     def get_by_email_and_password_hash(cls, email: str, password: str) -> Self | None:
-        ...
+        return None

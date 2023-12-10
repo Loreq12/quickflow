@@ -1,0 +1,2 @@
+from quickflow.external_actions.strategy.invoice.wfirma import WFirmaInvoiceStrategy
+from quickflow.external_actions.strategy.invoice.base import BaseInvoiceStrategy

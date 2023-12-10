@@ -1,17 +1,10 @@
 import sys
 
-from enum import StrEnum
-
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 
+from quickflow.consts import RequestsDataEnum
 from quickflow.logs import base_logger
-
-
-class RequestsDataEnum(StrEnum):
-    REQUEST_TO_SERVER = "req"
-    RESPONSE_FROM_SERVER = "res"
-    EXCEPTION = "exc"
 
 
 class LogMiddleware(BaseHTTPMiddleware):
